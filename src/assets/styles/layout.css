@@ -1,0 +1,12 @@
+* {
+	box-sizing: border-box;
+}
+
+input {
+	margin: 0;
+	appearance: none;
+	border: none;
+	outline: none;
+	padding: 0 16px;
+	background: transparent;
+}
