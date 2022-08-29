@@ -63,6 +63,10 @@ button {
 	outline: none;
 	padding: 0;
 	border: none;
+	background: transparent;
+	cursor: pointer;
+	font-size: 0;
+	line-height: 0;
 }
 
 a {
@@ -71,4 +75,16 @@ a {
 	&:hover {
 		text-decoration: none;
 	}
+}
+
+// Transition styles
+
+.v-enter-active,
+.v-leave-active {
+	transition: opacity 0.2s ease-in-out;
+}
+
+.v-enter-from,
+.v-leave-to {
+	opacity: 0;
 }

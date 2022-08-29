@@ -1,22 +1,48 @@
 <script setup lang="ts">
-defineProps({
+import ShowPassIcon from '../atoms/ShowPassIcon.vue'
+import { computed, ref } from 'vue'
+
+const props = defineProps({
+	modelValue: { type: String, default: null },
+	tabindex: { type: Number, default: null },
 	id: { type: String, default: null },
-	type: { type: String, default: 'text' },
 	placeholder: { type: String, default: null },
 	labelText: { type: String, default: null },
+	type: { type: String, default: 'text' },
+	errorText: { type: String, default: 'wrong data' },
 	error: { type: Boolean, default: false },
-	errorText: { type: String, default: 'Wrong data' },
-	tabindex: { type: Number, default: null },
 })
+defineEmits(['update:modelValue'])
+
+// Show/Hide password btn
+let isPassShown = ref(false)
+const changeInputType = computed(() => {
+	return props.type === 'password' && isPassShown.value ? 'text' : 'password'
+})
+const btnCheck = function () {
+	isPassShown.value = !isPassShown.value
+}
+//////
 </script>
+
 <template>
 	<label :class="error ? 'error' : null">
+		<Transition>
+			<ShowPassIcon
+				v-if="type === 'password' && modelValue"
+				:show-pass="isPassShown"
+				@show-pass-toggle="btnCheck"
+			/>
+		</Transition>
+
 		<input
-			:type="type"
+			:value="modelValue"
+			:type="changeInputType"
 			:name="id"
 			:id="id"
 			:placeholder="placeholder"
 			:tabindex="tabindex"
+			@input="$emit('update:modelValue', $event.target.value)"
 		/>
 		<span class="label__text">{{ labelText }}</span>
 		<span class="error__text">{{ errorText }}</span>
@@ -34,7 +60,7 @@ label {
 	border-radius: 12px;
 	width: 100%;
 	background: white;
-	transition: all 0.1s ease-in-out;
+	transition: all 0.2s ease-in-out;
 
 	&:focus-within {
 		box-shadow: 1px 2px 6px rgba(#0e2e44, 0.15);
@@ -50,7 +76,7 @@ label {
 		top: -12px;
 		background: white;
 		opacity: 1;
-		transition: opacity 0.1s ease-in-out;
+		transition: opacity 0.2s ease-in-out;
 	}
 
 	input {
@@ -58,11 +84,12 @@ label {
 		margin-bottom: 10px;
 		width: 100%;
 		color: $text-color-main;
+		padding-right: 40px;
 
 		&::placeholder {
 			font-size: 14px;
 			color: $text-color-placeholder;
-			transition: opacity 0.1s ease-in-out;
+			transition: opacity 0.2s ease-in-out;
 		}
 
 		&:placeholder-shown + .label__text {
@@ -96,6 +123,12 @@ label {
 		.error__text {
 			display: inline-block;
 		}
+	}
+
+	& :deep(button) {
+		position: absolute;
+		z-index: 4;
+		right: 12px;
 	}
 }
 </style>

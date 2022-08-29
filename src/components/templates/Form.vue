@@ -1,13 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineEmits(['submit:formSubmit'])
+</script>
 <template>
-	<form @submit.prevent="this.$emit('form-submit')">
+	<form :novalidate="true" @submit.prevent="$emit('submit:formSubmit')">
 		<slot></slot>
 	</form>
 </template>
 <style lang="scss" scoped>
 form {
-	width: 320px;
-	//max-width: 320px;
+	width: 100%;
+	max-width: 320px;
 
 	& :deep(label:not(:last-child)) {
 		margin-bottom: 16px;

@@ -4,6 +4,9 @@ import App from './App.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import Authorisation from './views/Authorisation.vue'
 import Registration from './views/Registration.vue'
+import { createPinia } from 'pinia'
+
+const pinia = createPinia()
 
 const routes = [
 	{ path: '/', component: Authorisation },
@@ -17,6 +20,7 @@ const router = createRouter({
 
 const app = createApp(App)
 
+app.use(pinia)
 app.use(router)
 
 app.mount('#app')
