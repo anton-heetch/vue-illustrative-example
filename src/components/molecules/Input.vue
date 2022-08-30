@@ -15,7 +15,7 @@ const props = defineProps({
 defineEmits(['update:modelValue'])
 
 // Show/Hide password btn
-let isPassShown = ref(false)
+let isPassShown = ref<boolean>(false)
 const changeInputType = computed(() => {
 	return props.type === 'password' && isPassShown.value ? 'text' : 'password'
 })
@@ -26,7 +26,7 @@ const btnCheck = function () {
 </script>
 
 <template>
-	<label :class="error ? 'error' : null">
+	<div class="inputWrapper">
 		<Transition>
 			<ShowPassIcon
 				v-if="type === 'password' && modelValue"
@@ -35,21 +35,31 @@ const btnCheck = function () {
 			/>
 		</Transition>
 
-		<input
-			:value="modelValue"
-			:type="changeInputType"
-			:name="id"
-			:id="id"
-			:placeholder="placeholder"
-			:tabindex="tabindex"
-			@input="$emit('update:modelValue', $event.target.value)"
-		/>
-		<span class="label__text">{{ labelText }}</span>
-		<span class="error__text">{{ errorText }}</span>
-	</label>
+		<Transition>
+			<slot />
+		</Transition>
+
+		<label :class="error ? 'error' : null">
+			<input
+				:value="modelValue"
+				:type="type === 'password' ? changeInputType : type"
+				:name="id"
+				:id="id"
+				:placeholder="placeholder"
+				:tabindex="tabindex"
+				@input="$emit('update:modelValue', $event.target.value)"
+			/>
+			<span class="label__text">{{ labelText }}</span>
+			<span class="error__text">{{ errorText }}</span>
+		</label>
+	</div>
 </template>
 <style lang="scss" scoped>
 @import '../../assets/styles/variables.scss';
+
+.inputWrapper {
+	position: relative;
+}
 
 label {
 	display: block;
@@ -123,12 +133,6 @@ label {
 		.error__text {
 			display: inline-block;
 		}
-	}
-
-	& :deep(button) {
-		position: absolute;
-		z-index: 4;
-		right: 12px;
 	}
 }
 </style>
