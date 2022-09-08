@@ -8,6 +8,5 @@ export const useUserDataStore = defineStore('userData', () => {
 		created: string
 	}
 	const user = ref<UserData>()
-
 	return { user }
 })

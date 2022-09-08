@@ -4,9 +4,12 @@ import Input from '../components/molecules/Input.vue'
 import Button from '../components/molecules/Button.vue'
 import { useAuthStore } from '../stores/authorise'
 import { storeToRefs } from 'pinia'
+import { watch } from 'vue'
+import { useUserDataStore } from '../stores/user-data'
 
 const { email, password } = storeToRefs(useAuthStore())
 const { formSubmit } = useAuthStore()
+const { user } = useUserDataStore()
 </script>
 <template>
 	<h1>Authorisation</h1>

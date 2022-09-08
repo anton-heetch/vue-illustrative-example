@@ -6,18 +6,24 @@ import Authorisation from './views/Authorisation.vue'
 import Registration from './views/Registration.vue'
 import Main from './views/Main.vue'
 import { createPinia } from 'pinia'
+import { useAuthStatus } from './hooks/useAuthStatus'
 
 const pinia = createPinia()
 
 const routes = [
-	{ path: '/', component: Authorisation },
+	{ path: '/', component: Main },
+	{ path: '/authorisation', component: Authorisation },
 	{ path: '/registration', component: Registration },
-	{ path: '/main', component: Main },
 ]
 
 const router = createRouter({
 	history: createWebHistory(),
 	routes,
+})
+
+router.beforeEach((to, from) => {
+	if (!useAuthStatus() && to.path !== '/authorisation')
+		return { path: '/authorisation' }
 })
 
 const app = createApp(App)
