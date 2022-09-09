@@ -4,10 +4,9 @@ import Input from '../components/molecules/Input.vue'
 import Button from '../components/molecules/Button.vue'
 import { useAuthStore } from '../stores/authorise'
 import { storeToRefs } from 'pinia'
-import { watch } from 'vue'
 import { useUserDataStore } from '../stores/user-data'
 
-const { email, password } = storeToRefs(useAuthStore())
+const { email, password, loadingStatus } = storeToRefs(useAuthStore())
 const { formSubmit } = useAuthStore()
 const { user } = useUserDataStore()
 </script>
@@ -26,7 +25,11 @@ const { user } = useUserDataStore()
 			label-text="Password"
 			placeholder="Enter password"
 		/>
-		<Button button-text="Authorisation" button-type="submit" />
+		<Button
+			button-text="Authorisation"
+			button-type="submit"
+			:is-loading="loadingStatus"
+		/>
 		<router-link to="/registration">Registration</router-link>
 	</Form>
 </template>

@@ -7,6 +7,7 @@ import Registration from './views/Registration.vue'
 import Main from './views/Main.vue'
 import { createPinia } from 'pinia'
 import { useAuthStatus } from './hooks/useAuthStatus'
+import toaster from './plugins/Toaster/toaster'
 
 const pinia = createPinia()
 
@@ -21,7 +22,7 @@ const router = createRouter({
 	routes,
 })
 
-router.beforeEach((to, from) => {
+router.beforeEach((to) => {
 	if (!useAuthStatus() && to.path !== '/authorisation')
 		return { path: '/authorisation' }
 })
@@ -30,5 +31,7 @@ const app = createApp(App)
 
 app.use(pinia)
 app.use(router)
+app.use(toaster)
+app.provide('toaster', app.config.globalProperties.$toaster)
 
 app.mount('#app')

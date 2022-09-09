@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Spinner from '../atoms/Spinner.vue'
+
 defineProps({
 	buttonType: {
 		type: String,
@@ -12,11 +14,16 @@ defineProps({
 		type: String,
 		default: null,
 	},
+	isLoading: {
+		type: Boolean,
+		default: false,
+	},
 })
 </script>
 <template>
-	<button :type="buttonType" :class="styleType">
-		{{ buttonText }}
+	<button :type="buttonType" :class="styleType" :disabled="isLoading">
+		<Spinner v-if="isLoading" />
+		<span v-else>{{ buttonText }}</span>
 	</button>
 </template>
 <style lang="scss" scoped>
@@ -29,6 +36,7 @@ button {
 	color: $text-color-main;
 	font-size: 16px;
 	transition: all 0.1s ease-in-out;
+	position: relative;
 
 	&:hover {
 		cursor: pointer;

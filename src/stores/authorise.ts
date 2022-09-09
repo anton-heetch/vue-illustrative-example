@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia'
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
 import axios, { AxiosResponse } from 'axios'
 import { useUserDataStore } from './user-data'
 
@@ -9,12 +9,17 @@ export const useAuthStore = defineStore('auth', () => {
 	let auth = ref<AxiosResponse | any>({})
 	const userDataStore = useUserDataStore()
 	let { user } = storeToRefs(userDataStore)
+	let loadingStatus = ref<boolean>(false)
+
+	const toast: any = inject('toaster')
 
 	const firebaseApi = import.meta.env.VITE_FIREBASE_TOKEN
 	const authUrl = import.meta.env.VITE_AUTH_URL
 	const firestoreUrl = import.meta.env.VITE_FIRESTORE_URL
 
 	const formSubmit = async function (): Promise<any> {
+		loadingStatus.value = true
+
 		const authData = {
 			email: email.value,
 			password: password.value,
@@ -31,6 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
 					auth = resp.data
 					localStorage.setItem('fIdToken', auth.idToken)
 					localStorage.setItem('fLocalId', auth.localId)
+					loadingStatus.value = false
 				})
 
 			await axios
@@ -44,11 +50,14 @@ export const useAuthStore = defineStore('auth', () => {
 				)
 				.then((resp) => {
 					user.value = resp.data.fields
+					loadingStatus.value = false
+					toast(`Привет ${user.value?.name.stringValue}!`)
 				})
 		} catch (e) {
 			console.log(e)
+			loadingStatus.value = false
 		}
 	}
 
-	return { email, password, formSubmit }
+	return { email, password, loadingStatus, formSubmit }
 })
