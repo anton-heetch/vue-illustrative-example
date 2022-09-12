@@ -1,15 +1,12 @@
-import { defineStore, storeToRefs } from 'pinia'
+import { defineStore } from 'pinia'
 import { inject, ref } from 'vue'
 import { AxiosResponse } from 'axios'
-import { useUserDataStore } from './user-data'
 import Repository from '../plugins/repositories'
 
 export const useAuthStore = defineStore('auth', () => {
-	const userDataStore = useUserDataStore()
-	const { user } = storeToRefs(userDataStore)
 	let email = ref<string>('')
 	let password = ref<string>('')
-	let authData = ref<AxiosResponse | any>({})
+	let authData = ref<AxiosResponse>()
 	let loadingStatus = ref<boolean>(false)
 	const toast: any = inject('toaster')
 	const UserRepo = Repository.get('user')
@@ -33,6 +30,7 @@ export const useAuthStore = defineStore('auth', () => {
 			.then((resp: any) => {
 				authData = resp.data
 				clearFields()
+				loadingStatus.value = false
 				router.push('/')
 			})
 			.catch((e: any) => {
@@ -40,22 +38,7 @@ export const useAuthStore = defineStore('auth', () => {
 				loadingStatus.value = false
 				throw new Error('Authorisation problem: ' + e)
 			})
-
-		await UserRepo.getProfile({
-			localId: authData.localId,
-			idToken: authData.idToken,
-		}).then((resp: any) => {
-			user.value = resp
-			toast(`Hello ${user.value?.name.stringValue}!`)
-			loadingStatus.value = false
-		})
 	}
 
-	const logOut = () => {
-		localStorage.removeItem('fIdToken')
-		localStorage.removeItem('fLocalId')
-		router.go()
-	}
-
-	return { email, password, loadingStatus, formSubmit, logOut }
+	return { email, password, loadingStatus, formSubmit }
 })

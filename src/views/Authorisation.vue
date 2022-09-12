@@ -9,7 +9,7 @@ const { email, password, loadingStatus } = storeToRefs(useAuthStore())
 const { formSubmit } = useAuthStore()
 </script>
 <template>
-	<h1>Authorisation</h1>
+	<h1>Sign In</h1>
 	<Form @submit="formSubmit">
 		<Input
 			v-model="email"

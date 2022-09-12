@@ -2,7 +2,11 @@
 defineEmits(['submit:formSubmit'])
 </script>
 <template>
-	<form :novalidate="true" @submit.prevent="$emit('submit:formSubmit')">
+	<form
+		:novalidate="true"
+		@submit.prevent="$emit('submit:formSubmit')"
+		autocomplete="off"
+	>
 		<slot />
 	</form>
 </template>

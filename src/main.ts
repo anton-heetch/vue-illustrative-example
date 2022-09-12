@@ -1,13 +1,13 @@
-import { createApp } from 'vue'
+import { createApp, inject } from 'vue'
 import './assets/styles/style.scss'
 import App from './App.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
-import { useAuthStatus } from './hooks/useAuthStatus'
 import Authorisation from './views/Authorisation.vue'
 import Registration from './views/Registration.vue'
 import Main from './views/Main.vue'
 import toaster from './plugins/Toaster/toaster'
+import { useAuthStatus } from './hooks/useAuthStatus'
 
 const pinia = createPinia()
 
