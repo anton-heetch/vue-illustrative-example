@@ -55,8 +55,16 @@ button {
 		}
 	}
 
-	//&.btn-empty {
-	//	background: transparent;
-	//}
+	&.btn-link {
+		height: auto;
+		width: auto;
+		font-size: 12px;
+		text-decoration: underline;
+		color: $button-color-main;
+
+		&:active {
+			text-decoration: none;
+		}
+	}
 }
 </style>

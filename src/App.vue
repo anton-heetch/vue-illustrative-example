@@ -4,3 +4,9 @@
 		<router-view />
 	</div>
 </template>
+<style lang="scss" scoped>
+.main {
+	height: 100vh;
+	padding: 0 20px;
+}
+</style>

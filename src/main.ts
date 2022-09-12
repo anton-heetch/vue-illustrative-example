@@ -2,11 +2,11 @@ import { createApp } from 'vue'
 import './assets/styles/style.scss'
 import App from './App.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import { createPinia } from 'pinia'
+import { useAuthStatus } from './hooks/useAuthStatus'
 import Authorisation from './views/Authorisation.vue'
 import Registration from './views/Registration.vue'
 import Main from './views/Main.vue'
-import { createPinia } from 'pinia'
-import { useAuthStatus } from './hooks/useAuthStatus'
 import toaster from './plugins/Toaster/toaster'
 
 const pinia = createPinia()
@@ -33,5 +33,6 @@ app.use(pinia)
 app.use(router)
 app.use(toaster)
 app.provide('toaster', app.config.globalProperties.$toaster)
+app.provide('router', app.config.globalProperties.$router)
 
 app.mount('#app')
